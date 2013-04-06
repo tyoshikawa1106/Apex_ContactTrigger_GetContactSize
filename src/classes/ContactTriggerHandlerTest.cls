@@ -1,5 +1,5 @@
 /*
- * 取引先責任者トリガー・Handlerテストクラス
+ * 取引先責任者トリガー
  * © 2013 Force.com Developer
  * ----------------------------------------
  * @createdDate      : 2013/01/01
@@ -20,10 +20,10 @@ private class ContactTriggerHandlerTest {
         System.debug('◆◆◆◆updateContactCntTest1:START');
         
         // ユーザ取得
-        User objUser = getUser();
+        User user = getUser();
         
         // テスト実施
-        System.RunAs(objUser) {
+        System.RunAs(user) {
             
             // カレントページにパラメータを設定
             PageReference pageRef = getPageReference();
@@ -52,53 +52,53 @@ private class ContactTriggerHandlerTest {
         System.debug('◆◆◆◆updateContactCntTest2:START');
         
         // ユーザ取得
-        User objUser = getUser();
+        User user = getUser();
         
         // テスト実施
-        System.RunAs(objUser) {
+        System.RunAs(user) {
             
             // カレントページにパラメータを設定
             PageReference pageRef = getPageReference();
             Test.setCurrentPage(pageRef);
             
             // 取引先テストデータ作成
-            Account objAccount = createAccount();
+            Account account = createAccount();
             // 取引先が登録されていることを確認
-            System.assertEquals(String.isEmpty(objAccount.Id), false);
+            System.assertEquals(String.isEmpty(account.Id), false);
             // 取引先に紐付く取引先責任者件数の確認
-            System.assertEquals(objAccount.ContactCnt__c, 0);
+            System.assertEquals(account.ContactCnt__c, 0);
             
             // テスト開始
             Test.startTest();
             
             // 取引先責任者INSERT
-            Contact objContact = createContact(objAccount.Id);
+            Contact contact = createContact(account.Id);
             // 取引先が登録されていることを確認
-            System.assertEquals(String.isEmpty(objContact.AccountId), false);
+            System.assertEquals(String.isEmpty(contact.AccountId), false);
             
             // 取引先取得
             Account result = new Account();
-            result = getAccount(objAccount.Id);
+            result = getAccount(account.Id);
             // 取引先に紐付く取引先責任者件数の確認
             System.assertEquals(result.ContactCnt__c, 1);
             
             // 取引先責任者DELETE
-            delete objContact;
+            delete contact;
             
             // 取引先取得
-            result = getAccount(objAccount.Id);
+            result = getAccount(account.Id);
             // 取引先に紐付く取引先責任者件数の確認
             System.assertEquals(result.ContactCnt__c, 0);
             
             // 取引先取得(削除済み)
-            List<Contact> objContactDels = getContactAllRows();
-            System.assertEquals(objContactDels.size(), 1);
+            List<Contact> contactDels = getContactAllRows();
+            System.assertEquals(contactDels.size(), 1);
             
             // 取引先復元
-            undelete objContactDels;
+            undelete contactDels;
             
             // 取引先取得
-            result = getAccount(objAccount.Id);
+            result = getAccount(account.Id);
             // 取引先に紐付く取引先責任者件数の確認
             System.assertEquals(result.ContactCnt__c, 1);
             
@@ -117,52 +117,52 @@ private class ContactTriggerHandlerTest {
         System.debug('◆◆◆◆updateContactCntTest3:START');
         
         // ユーザ取得
-        User objUser = getUser();
+        User user = getUser();
         
         // テスト実施
-        System.RunAs(objUser) {
+        System.RunAs(user) {
             
             // カレントページにパラメータを設定
             PageReference pageRef = getPageReference();
             Test.setCurrentPage(pageRef);
             
             // 取引先テストデータ作成(更新前用)
-            Account objAccountOld = createAccount();
+            Account accountOld = createAccount();
             // 取引先が登録されていることを確認
-            System.assertEquals(String.isEmpty(objAccountOld.Id), false);
+            System.assertEquals(String.isEmpty(accountOld.Id), false);
             // 取引先に紐付く取引先責任者件数の確認
-            System.assertEquals(objAccountOld.ContactCnt__c, 0);
+            System.assertEquals(accountOld.ContactCnt__c, 0);
             
             // 取引先責任者INSERT
-            Contact objContact = createContact(objAccountOld.Id);
+            Contact contact = createContact(accountOld.Id);
             // 取引先が登録されていることを確認
-            System.assertEquals(String.isEmpty(objContact.AccountId), false);
+            System.assertEquals(String.isEmpty(contact.AccountId), false);
             
             // 取引先取得
             Account resultOld = new Account();
-            resultOld = getAccount(objAccountOld.Id);
+            resultOld = getAccount(accountOld.Id);
             // 取引先に紐付く取引先責任者件数の確認
             System.assertEquals(resultOld.ContactCnt__c, 1);
             
             // 取引先テストデータ作成(更新後用)
-            Account objAccountNew = createAccount();
+            Account accountNew = createAccount();
             // 取引先が登録されていることを確認
-            System.assertEquals(String.isEmpty(objAccountNew.Id), false);
+            System.assertEquals(String.isEmpty(accountNew.Id), false);
             // 取引先に紐付く取引先責任者件数の確認
-            System.assertEquals(objAccountNew.ContactCnt__c, 0);
+            System.assertEquals(accountNew.ContactCnt__c, 0);
             
             // テスト開始
             Test.startTest();
             
             // 取引先責任者の紐付き先変更
-            objContact.AccountId = objAccountNew.Id;
-            update objContact;
+            contact.AccountId = accountNew.Id;
+            update contact;
             
             // 取引先に紐付く取引先責任者件数の確認
-            resultOld = getAccount(objAccountOld.Id);
+            resultOld = getAccount(accountOld.Id);
             System.assertEquals(resultOld.ContactCnt__c, 0);
             
-            Account resultNew = getAccount(objAccountNew.Id);
+            Account resultNew = getAccount(accountNew.Id);
             System.assertEquals(resultNew.ContactCnt__c, 1);
             
             // テスト終了
@@ -204,11 +204,12 @@ private class ContactTriggerHandlerTest {
      * @return	: 取引先テストデータ
      */
     private static Account createAccount() {
-    	Account objAccount = new Account();
-    	objAccount.Name = 'Test Company';
-    	objAccount.ContactCnt__c = 0;
-    	insert objAccount;
-    	return objAccount;
+    	Account account = new Account(
+	    	 Name = 'Test Company'
+	    	,ContactCnt__c = 0
+    	);
+    	insert account;
+    	return account;
     }
     
     /*
@@ -217,12 +218,13 @@ private class ContactTriggerHandlerTest {
      * @return	: 取引先責任者テストデータ
      */
     private static Contact createContact(Id prmAccountId) {
-    	Contact objContact = new Contact();
-    	objContact.LastName = 'Yoshkawa';
-    	objContact.FirstName = 'Taiki';
-    	objContact.AccountId = prmAccountId;
-    	insert objContact;
-    	return objContact;
+    	Contact contact = new Contact(
+	    	 LastName = 'Yoshkawa'
+	    	,FirstName = 'Taiki'
+	    	,AccountId = prmAccountId
+    	);
+    	insert contact;
+    	return contact;
     }
     
     /*
@@ -231,7 +233,7 @@ private class ContactTriggerHandlerTest {
      * @return	: 取引先テストデータ
      */
     private static Account getAccount(Id prmAccountId) {
-    	List<Account> objAccounts = [
+    	List<Account> accounts = [
     		select
     			Id
     			,ContactCnt__c
@@ -241,8 +243,8 @@ private class ContactTriggerHandlerTest {
     			Id =: prmAccountId
     		limit 1
     	];
-    	if (objAccounts.isEmpty() != true) {
-    		return objAccounts[0];
+    	if (accounts.isEmpty() != true) {
+    		return accounts[0];
     	}
     	return new Account();
     }

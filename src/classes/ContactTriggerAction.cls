@@ -1,5 +1,5 @@
 /*
- * 取引先責任者トリガー・Actionクラス
+ * 取引先責任者トリガー
  * © 2013 Force.com Developer
  * ----------------------------------------
  * @createdDate      : 2013/01/01
@@ -83,9 +83,9 @@ public with sharing class ContactTriggerAction {
 	public List<Account> getUpdateAccounts(List<Account> prmAccounts) {
 		System.debug('◆◆◆◆getUpdateAccounts:START');
 		
-		for (Account objAccount : prmAccounts) {
+		for (Account account : prmAccounts) {
 			// 取引先責任者件数
-			objAccount.ContactCnt__c = objAccount.Contacts.size();
+			account.ContactCnt__c = account.Contacts.size();
 		}
 		
 		System.debug('◆◆◆◆getUpdateAccounts:END');

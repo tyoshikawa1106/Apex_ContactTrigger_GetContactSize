@@ -1,5 +1,5 @@
 /*
- * 取引先責任者トリガー・Actionテストクラス
+ * 取引先責任者トリガー
  * © 2013 Force.com Developer
  * ----------------------------------------
  * @createdDate      : 2013/01/01
@@ -22,10 +22,10 @@ private class ContactTriggerActionTest {
         System.debug('◆◆◆◆getAccountIdTest1:START');
         
         // ユーザ取得
-        User objUser = getUser();
+        User user = getUser();
         
         // テスト実施
-        System.RunAs(objUser) {
+        System.RunAs(user) {
         	
         	// Actionクラス
         	ContactTriggerAction action = new ContactTriggerAction();
@@ -35,13 +35,13 @@ private class ContactTriggerActionTest {
             Test.setCurrentPage(pageRef);
             
             // 取引先責任者
-            List<Contact> objContacts = new List<Contact>();
+            List<Contact> contacts = new List<Contact>();
             
             // テスト開始
             Test.startTest();            
             
             // 取引先ID
-            Set<Id> accountIds = action.getAccountId(objContacts);
+            Set<Id> accountIds = action.getAccountId(contacts);
             System.assertEquals(accountIds.size(), 0);
             
             // テスト終了
@@ -59,10 +59,10 @@ private class ContactTriggerActionTest {
         System.debug('◆◆◆◆getAccountIdTest2:START');
         
         // ユーザ取得
-        User objUser = getUser();
+        User user = getUser();
         
         // テスト実施
-        System.RunAs(objUser) {
+        System.RunAs(user) {
         	
         	// Actionクラス
         	ContactTriggerAction action = new ContactTriggerAction();
@@ -72,21 +72,21 @@ private class ContactTriggerActionTest {
             Test.setCurrentPage(pageRef);
             
             // 取引先取得
-            Account objAccount = createAccount();
+            Account account = createAccount();
             
             // 取引先責任者
-            List<Contact> objContacts = new List<Contact>();
+            List<Contact> contacts = new List<Contact>();
             for (Integer i = 0; i < LIST_LIMIT; i++) {
-            	objContacts.add(createContact(objAccount.Id));
+            	contacts.add(createContact(account.Id));
             }
             
             // テスト開始
             Test.startTest();
             
             // 取引先ID
-            Set<Id> accountIds = action.getAccountId(objContacts);
-            for (Integer i = 0; i < objContacts.size(); i++) {
-            	System.assertEquals(accountIds.contains(objContacts[i].accountId), true);
+            Set<Id> accountIds = action.getAccountId(contacts);
+            for (Integer i = 0; i < contacts.size(); i++) {
+            	System.assertEquals(accountIds.contains(contacts[i].accountId), true);
             }
             
             // テスト終了
@@ -104,10 +104,10 @@ private class ContactTriggerActionTest {
         System.debug('◆◆◆◆getAccountIdTest3:START');
         
         // ユーザ取得
-        User objUser = getUser();
+        User user = getUser();
         
         // テスト実施
-        System.RunAs(objUser) {
+        System.RunAs(user) {
         	
         	// Actionクラス
         	ContactTriggerAction action = new ContactTriggerAction();
@@ -117,22 +117,22 @@ private class ContactTriggerActionTest {
             Test.setCurrentPage(pageRef);
             
             // 取引先取得
-            Account objAccountNew = createAccount();
-            Account objAccountOld = createAccount();
+            Account accountNew = createAccount();
+            Account accountOld = createAccount();
             
             // 取引先責任者
-            List<Contact> objContactNews = new List<Contact>();
-            List<Contact> objContactOlds = new List<Contact>();
+            List<Contact> contactNews = new List<Contact>();
+            List<Contact> contactOlds = new List<Contact>();
             for (Integer i = 0; i < LIST_LIMIT; i++) {
-            	objContactNews.add(createContact(objAccountNew.Id));
-            	objContactOlds.add(createContact(objAccountOld.Id));
+            	contactNews.add(createContact(accountNew.Id));
+            	contactOlds.add(createContact(accountOld.Id));
             }
             
             // テスト開始
             Test.startTest();
             
             // 取引先ID
-            Set<Id> accountIds = action.getAccountId(objContactNews, objContactOlds);
+            Set<Id> accountIds = action.getAccountId(contactNews, contactOlds);
             
             // テスト終了
             Test.stopTest();
@@ -149,10 +149,10 @@ private class ContactTriggerActionTest {
         System.debug('◆◆◆◆getAccountsTest1:START');
         
         // ユーザ取得
-        User objUser = getUser();
+        User user = getUser();
         
         // テスト実施
-        System.RunAs(objUser) {
+        System.RunAs(user) {
         	
         	// Actionクラス
         	ContactTriggerAction action = new ContactTriggerAction();
@@ -163,18 +163,18 @@ private class ContactTriggerActionTest {
             
             // 取引先取得
             Set<Id> accountIds = new Set<Id>();
-            Account objAccountNew = createAccount();
-            Account objAccountOld = createAccount();
-            accountIds.add(objAccountNew.Id);
-            accountIds.add(objAccountOld.Id);
+            Account accountNew = createAccount();
+            Account accountOld = createAccount();
+            accountIds.add(accountNew.Id);
+            accountIds.add(accountOld.Id);
             
             // テスト開始
             Test.startTest();
             
             // 取引先ID
-            List<Account> objAccounts = action.getAccounts(accountIds);
-            for (Account objAccount : objAccounts) {
-            	System.assertEquals(objAccount.Contacts.size(), 0);
+            List<Account> accounts = action.getAccounts(accountIds);
+            for (Account account : accounts) {
+            	System.assertEquals(account.Contacts.size(), 0);
             }
             
             // テスト終了
@@ -192,10 +192,10 @@ private class ContactTriggerActionTest {
         System.debug('◆◆◆◆getAccountsTest2:START');
         
         // ユーザ取得
-        User objUser = getUser();
+        User user = getUser();
         
         // テスト実施
-        System.RunAs(objUser) {
+        System.RunAs(user) {
         	
         	// Actionクラス
         	ContactTriggerAction action = new ContactTriggerAction();
@@ -206,25 +206,25 @@ private class ContactTriggerActionTest {
             
             // 取引先取得
             Set<Id> accountIds = new Set<Id>();
-            Account objAccountNew = createAccount();
-            Account objAccountOld = createAccount();
-            accountIds.add(objAccountNew.Id);
-            accountIds.add(objAccountOld.Id);
+            Account accountNew = createAccount();
+            Account accountOld = createAccount();
+            accountIds.add(accountNew.Id);
+            accountIds.add(accountOld.Id);
             
             // 取引先責任者
-            Contact objContactNew = createContact(objAccountNew.Id);
-            insert objContactNew;
+            Contact contactNew = createContact(accountNew.Id);
+            insert contactNew;
             
-            Contact objContactOld = createContact(objAccountOld.Id);
-            insert objContactOld;
+            Contact contactOld = createContact(accountOld.Id);
+            insert contactOld;
             
             // テスト開始
             Test.startTest();
             
             // 取引先ID
-            List<Account> objAccounts = action.getAccounts(accountIds);
-            for (Account objAccount : objAccounts) {
-            	System.assertEquals(objAccount.Contacts.size(), 1);
+            List<Account> accounts = action.getAccounts(accountIds);
+            for (Account account : accounts) {
+            	System.assertEquals(account.Contacts.size(), 1);
             }
             
             // テスト終了
@@ -242,10 +242,10 @@ private class ContactTriggerActionTest {
         System.debug('◆◆◆◆getAccountsTes3:START');
         
         // ユーザ取得
-        User objUser = getUser();
+        User user = getUser();
         
         // テスト実施
-        System.RunAs(objUser) {
+        System.RunAs(user) {
         	
         	// Actionクラス
         	ContactTriggerAction action = new ContactTriggerAction();
@@ -256,25 +256,25 @@ private class ContactTriggerActionTest {
             
             // 取引先取得
             Set<Id> accountIds = new Set<Id>();
-            Account objAccountNew = createAccount();
-            Account objAccountOld = createAccount();
-            accountIds.add(objAccountNew.Id);
-            accountIds.add(objAccountOld.Id);
+            Account accountNew = createAccount();
+            Account accountOld = createAccount();
+            accountIds.add(accountNew.Id);
+            accountIds.add(accountOld.Id);
             
             // 取引先責任者
-            Contact objContactNew = createContact(objAccountNew.Id);
-            insert objContactNew;
+            Contact contactNew = createContact(accountNew.Id);
+            insert contactNew;
             
-            Contact objContactOld = createContact(objAccountOld.Id);
-            insert objContactOld;
+            Contact contactOld = createContact(accountOld.Id);
+            insert contactOld;
             
             // テスト開始
             Test.startTest();
             
             // 取引先ID
-            List<Account> objAccounts = action.getAccounts(accountIds);
-            for (Account objAccount : objAccounts) {
-            	System.assertEquals(objAccount.Contacts.size(), 1);
+            List<Account> accounts = action.getAccounts(accountIds);
+            for (Account account : accounts) {
+            	System.assertEquals(account.Contacts.size(), 1);
             }
             
             // テスト終了
@@ -292,10 +292,10 @@ private class ContactTriggerActionTest {
         System.debug('◆◆◆◆getUpdateAccountsTest1:START');
         
         // ユーザ取得
-        User objUser = getUser();
+        User user = getUser();
         
         // テスト実施
-        System.RunAs(objUser) {
+        System.RunAs(user) {
         	
         	// Actionクラス
         	ContactTriggerAction action = new ContactTriggerAction();
@@ -305,14 +305,14 @@ private class ContactTriggerActionTest {
             Test.setCurrentPage(pageRef);
             
             // 取引先ID
-            List<Account> objAccounts = new List<Account>();
+            List<Account> accounts = new List<Account>();
             
             // テスト開始
             Test.startTest();
             
             // 取引先の更新値をセット
-            objAccounts = action.getUpdateAccounts(objAccounts);
-            System.assertEquals(objAccounts.isEmpty(), true);
+            accounts = action.getUpdateAccounts(accounts);
+            System.assertEquals(accounts.isEmpty(), true);
             
             // テスト終了
             Test.stopTest();
@@ -329,10 +329,10 @@ private class ContactTriggerActionTest {
         System.debug('◆◆◆◆getUpdateAccountsTest2:START');
         
         // ユーザ取得
-        User objUser = getUser();
+        User user = getUser();
         
         // テスト実施
-        System.RunAs(objUser) {
+        System.RunAs(user) {
         	
         	// Actionクラス
         	ContactTriggerAction action = new ContactTriggerAction();
@@ -343,31 +343,31 @@ private class ContactTriggerActionTest {
             
             // 取引先取得
             Set<Id> accountIds = new Set<Id>();
-            Account objAccountNew = createAccount();
-            Account objAccountOld = createAccount();
-            accountIds.add(objAccountNew.Id);
-            accountIds.add(objAccountOld.Id);
+            Account accountNew = createAccount();
+            Account accountOld = createAccount();
+            accountIds.add(accountNew.Id);
+            accountIds.add(accountOld.Id);
             
             // 取引先責任者
-            Contact objContactNew = createContact(objAccountNew.Id);
-            insert objContactNew;
+            Contact contactNew = createContact(accountNew.Id);
+            insert contactNew;
             
-            Contact objContactOld = createContact(objAccountOld.Id);
-            insert objContactOld;
+            Contact contactOld = createContact(accountOld.Id);
+            insert contactOld;
             
             // 取引先ID
-            List<Account> objAccounts = action.getAccounts(accountIds);
-            for (Account objAccount : objAccounts) {
-            	System.assertEquals(objAccount.Contacts.size(), 1);
+            List<Account> accounts = action.getAccounts(accountIds);
+            for (Account account : accounts) {
+            	System.assertEquals(account.Contacts.size(), 1);
             }
             
             // テスト開始
             Test.startTest();
             
             // 取引先の更新値をセット
-            objAccounts = action.getUpdateAccounts(objAccounts);
-            for (Account objAccount : objAccounts) {
-            	System.assertEquals(objAccount.Contacts.size(), objAccount.ContactCnt__c);
+            accounts = action.getUpdateAccounts(accounts);
+            for (Account account : accounts) {
+            	System.assertEquals(account.Contacts.size(), account.ContactCnt__c);
             }
             
             // テスト終了
@@ -409,11 +409,12 @@ private class ContactTriggerActionTest {
      * @return	: 取引先テストデータ
      */
     private static Account createAccount() {
-    	Account objAccount = new Account();
-    	objAccount.Name = 'Test Company';
-    	objAccount.ContactCnt__c = 0;
-    	insert objAccount;
-    	return objAccount;
+    	Account account = new Account(
+    		 Name = 'Test Company'
+    		,ContactCnt__c = 0
+    	);
+    	insert account;
+    	return account;
     }
     
     /*
@@ -422,11 +423,12 @@ private class ContactTriggerActionTest {
      * @return	: 取引先責任者テストデータ
      */
     private static Contact createContact(Id prmAccountId) {
-    	Contact objContact = new Contact();
-    	objContact.LastName = 'Yoshkawa';
-    	objContact.FirstName = 'Taiki';
-    	objContact.AccountId = prmAccountId;
-    	return objContact;
+    	Contact contact = new Contact(
+	    	 LastName = 'Yoshkawa'
+	    	,FirstName = 'Taiki'
+	    	,AccountId = prmAccountId
+    	);
+    	return contact;
     }
     
     /*
@@ -435,7 +437,7 @@ private class ContactTriggerActionTest {
      * @return	: 取引先テストデータ
      */
     private static Account getAccount(Id prmAccountId) {
-    	List<Account> objAccounts = [
+    	List<Account> accounts = [
     		select
     			Id
     			,ContactCnt__c
@@ -445,8 +447,8 @@ private class ContactTriggerActionTest {
     			Id =: prmAccountId
     		limit 1
     	];
-    	if (objAccounts.isEmpty() != true) {
-    		return objAccounts[0];
+    	if (accounts.isEmpty() != true) {
+    		return accounts[0];
     	}
     	return new Account();
     }
